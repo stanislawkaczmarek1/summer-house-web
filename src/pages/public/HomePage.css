@@ -9,10 +9,23 @@
 .hero__bg {
   position: absolute;
   inset: -20%;
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(135deg,
+      #0f1f18 0%,
+      #1a2d25 25%,
+      #2d4a3e 50%,
+      #1e3328 70%,
+      #0d1a13 100%);
   transform: translateY(var(--parallax-y, 0));
   will-change: transform;
+}
+
+.hero__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(201, 168, 76, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(45, 74, 62, 0.6) 0%, transparent 50%);
 }
 
 .hero__overlay {
@@ -235,6 +248,7 @@
   font-weight: var(--weight-semibold);
 }
 
+/* Image grid */
 .editorial__visual {
   position: relative;
 }
@@ -320,6 +334,7 @@
   line-height: 1.5;
 }
 
+
 .map-teaser {
   position: relative;
   padding-block: var(--space-32);
@@ -330,8 +345,23 @@
 .map-teaser__bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(160deg,
+      #0d1f18 0%,
+      #1a2d25 30%,
+      #243d32 55%,
+      #1a2820 80%,
+      #0f1a14 100%);
+}
+
+.map-teaser__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
 }
 
 .map-teaser__overlay {

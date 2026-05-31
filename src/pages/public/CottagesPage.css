@@ -3,8 +3,22 @@
   height: 340px;
   display: flex;
   align-items: flex-end;
-  background-size: cover;
-  background-position: center 40%;
+  background: linear-gradient(135deg,
+      #0f1f18 0%,
+      #1e3328 35%,
+      #2d4a3e 65%,
+      #1a2d25 100%);
+  overflow: hidden;
+}
+
+.cottages-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 80% 20%, rgba(201, 168, 76, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 90%, rgba(45, 74, 62, 0.5) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .cottages-hero__overlay {
@@ -34,6 +48,7 @@
   font-size: var(--text-md);
   color: rgba(250, 247, 242, 0.7);
 }
+
 
 .cottages-searchbar {
   position: sticky;
