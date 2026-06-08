@@ -1,0 +1,90 @@
+.cottage-map {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border-light);
+}
+
+.cottage-map__map {
+  width: 100%;
+  height: 360px;
+}
+
+/* Override leaflet tile filter for a warmer look */
+.cottage-map__map .leaflet-tile {
+  filter: saturate(0.85) brightness(1.02);
+}
+
+/* Custom marker tint */
+.leaflet-marker--custom {
+  filter: hue-rotate(120deg) saturate(1.5);
+}
+
+/* Popup */
+.cottage-map__popup .leaflet-popup-content-wrapper {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border-light);
+  font-family: var(--font-body);
+  padding: 0;
+}
+
+.cottage-map__popup .leaflet-popup-content {
+  margin: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.cottage-map__popup strong {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+.cottage-map__popup span {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.cottage-map__popup .leaflet-popup-tip {
+  background: var(--color-surface);
+}
+
+/* Directions button */
+.cottage-map__directions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-surface-warm);
+  border-top: 1px solid var(--color-border-light);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+
+.cottage-map__directions:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-primary-dark);
+}
+
+/* Empty state */
+.cottage-map--empty {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-light);
+}
+
+.cottage-map__empty-icon {
+  font-size: 2.5rem;
+}

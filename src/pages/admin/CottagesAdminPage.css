@@ -1,0 +1,196 @@
+.admin-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  background: rgba(184, 64, 64, 0.08);
+  border: 1px solid rgba(184, 64, 64, 0.2);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  margin-bottom: var(--space-6);
+}
+
+.admin-table-loading,
+.admin-table-empty {
+  padding: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  color: var(--color-text-light);
+}
+
+.admin-table-empty span {
+  font-size: 3rem;
+}
+
+.admin-table-empty p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.cottages-admin-table__name-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.cottages-admin-table__thumb {
+  width: 52px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  border: 1px solid var(--color-border-light);
+}
+
+.cottages-admin-table__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cottages-admin-table__name {
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+.cottages-admin-table__id {
+  font-size: var(--text-xs);
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+
+.cottages-admin-table__capacity {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.cottages-admin-table__price {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  color: var(--color-primary);
+}
+
+.cottages-admin-table__address {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.visibility-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background var(--duration-fast),
+    color var(--duration-fast),
+    border-color var(--duration-fast);
+}
+
+.visibility-toggle--on {
+  background: rgba(58, 125, 90, 0.1);
+  color: var(--color-success);
+  border-color: rgba(58, 125, 90, 0.2);
+}
+
+.visibility-toggle--on:hover {
+  background: rgba(58, 125, 90, 0.18);
+}
+
+.visibility-toggle--off {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-light);
+  border-color: var(--color-border-light);
+}
+
+.visibility-toggle--off:hover {
+  background: var(--color-border-light);
+  color: var(--color-text-muted);
+}
+
+.visibility-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.admin-btn--danger {
+  background: rgba(184, 64, 64, 0.08);
+  color: var(--color-error);
+  border: 1px solid rgba(184, 64, 64, 0.2);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background var(--duration-fast), border-color var(--duration-fast);
+}
+
+.admin-btn--danger:hover {
+  background: rgba(184, 64, 64, 0.15);
+  border-color: rgba(184, 64, 64, 0.35);
+}
+
+.admin-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-modal);
+  background: var(--color-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border-light);
+}
+
+.admin-modal__title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-light);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+.admin-modal__body {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: var(--leading-loose);
+  margin-bottom: var(--space-6);
+}
+
+.admin-modal__body strong {
+  color: var(--color-text);
+}
+
+.admin-modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
