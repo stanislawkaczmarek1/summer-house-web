@@ -59,30 +59,61 @@ export default function HomePage() {
         <div className="hero__overlay" />
 
         <div className="hero__content container">
-          <div className="hero__eyebrow animate-fade-in-up">
-            <span className="hero__eyebrow-line" />
-            <span>Premium Cottage Rentals</span>
-            <span className="hero__eyebrow-line" />
+          <div className="hero__text">
+            <div className="hero__eyebrow animate-fade-in-up">
+              <span className="hero__eyebrow-line" />
+              <span>Premium Cottage Rentals</span>
+              <span className="hero__eyebrow-line" />
+            </div>
+
+            <h1 className="hero__title animate-fade-in-up delay-100">
+              Your Perfect<br />
+              <em>Summer Escape</em><br />
+              Awaits
+            </h1>
+
+            <p className="hero__subtitle animate-fade-in-up delay-200">
+              Discover handpicked cottages in breathtaking locations.<br />
+              Book your retreat and create memories that last forever.
+            </p>
+
+            <div className="hero__actions animate-fade-in-up delay-300">
+              <Link to="/cottages" className="btn btn--accent btn--lg">
+                Browse Cottages
+              </Link>
+              <Link to="/cottages" className="btn btn--light btn--lg">
+                View on Map
+              </Link>
+            </div>
           </div>
 
-          <h1 className="hero__title animate-fade-in-up delay-100">
-            Your Perfect<br />
-            <em>Summer Escape</em><br />
-            Awaits
-          </h1>
+          <div className="hero__visual animate-fade-in delay-200">
+            <div className="hero__visual-frame">
+              <span className="hero__visual-corner hero__visual-corner--tl" />
+              <span className="hero__visual-corner hero__visual-corner--tr" />
+              <span className="hero__visual-corner hero__visual-corner--bl" />
+              <span className="hero__visual-corner hero__visual-corner--br" />
 
-          <p className="hero__subtitle animate-fade-in-up delay-200">
-            Discover handpicked cottages in breathtaking locations.<br />
-            Book your retreat and create memories that last forever.
-          </p>
+              <span className="hero__visual-line hero__visual-line--top" />
+              <span className="hero__visual-line hero__visual-line--bottom" />
 
-          <div className="hero__actions animate-fade-in-up delay-300">
-            <Link to="/cottages" className="btn btn--accent btn--lg">
-              Browse Cottages
-            </Link>
-            <Link to="/cottages" className="btn btn--light btn--lg">
-              View on Map
-            </Link>
+              <div className="hero__visual-circle-wrap">
+                <div className="hero__visual-circle" />
+                <div className="hero__visual-dot" />
+              </div>
+
+
+              <div className="hero__visual-icon">🏡</div>
+
+              <div className="hero__visual-stat hero__visual-stat--tl">
+                <span className="hero__visual-stat-value">4.9★</span>
+                <span className="hero__visual-stat-label">Avg. rating</span>
+              </div>
+              <div className="hero__visual-stat hero__visual-stat--br">
+                <span className="hero__visual-stat-value">120+</span>
+                <span className="hero__visual-stat-label">Properties</span>
+              </div>
+            </div>
           </div>
         </div>
 

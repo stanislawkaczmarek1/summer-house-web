@@ -37,19 +37,19 @@ export default function AppRouter() {
         {/* admin */}
         <Route path="/admin/login" element={<LoginPage />} />
         <Route path="/admin" element={
-          <ProtectedRoute><DashboardPage /></ProtectedRoute>
+          <DashboardPage />
         } />
         <Route path="/admin/cottages" element={
-          <ProtectedRoute><CottagesAdminPage /></ProtectedRoute>
+          <CottagesAdminPage />
         } />
         <Route path="/admin/cottages/new" element={
-          <ProtectedRoute><CottageFormPage /></ProtectedRoute>
+          <CottageFormPage />
         } />
         <Route path="/admin/cottages/:id/edit" element={
-          <ProtectedRoute><CottageFormPage /></ProtectedRoute>
+          <CottageFormPage />
         } />
         <Route path="/admin/reservations" element={
-          <ProtectedRoute><ReservationsAdminPage /></ProtectedRoute>
+          <ReservationsAdminPage />
         } />
 
         {/* fallback */}
