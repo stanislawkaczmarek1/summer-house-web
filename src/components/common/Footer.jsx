@@ -23,7 +23,7 @@ export default function Footer() {
             <h4 className="footer__col-title">Explore</h4>
             <ul className="footer__list">
               <li><Link to="/cottages" className="footer__link">All Cottages</Link></li>
-              <li><Link to="/cottages" className="footer__link">Map View</Link></li>
+              <li><Link to="/map" className="footer__link">Map View</Link></li>
               <li><Link to="/cottages" className="footer__link">Book Now</Link></li>
             </ul>
           </div>

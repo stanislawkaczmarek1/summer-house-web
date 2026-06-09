@@ -8,14 +8,8 @@ import { cottagesApi } from '../../api/cottages';
 import './CottageDetailPage.css';
 
 const AMENITY_ICONS = {
-  'WiFi': '⌘',
-  'Parking': '⊡',
-  'Kitchen': '⊕',
-  'Fireplace': '◈',
-  'Pool': '◎',
-  'Pet-friendly': '◉',
-  'BBQ': '◆',
-  'Sauna': '◇',
+  'WiFi': '⌘', 'Parking': '⊡', 'Kitchen': '⊕', 'Fireplace': '◈',
+  'Pool': '◎', 'Pet-friendly': '◉', 'BBQ': '◆', 'Sauna': '◇',
 };
 
 export default function CottageDetailPage() {
@@ -25,7 +19,6 @@ export default function CottageDetailPage() {
   const [cottage, setCottage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState(1);
@@ -33,18 +26,10 @@ export default function CottageDetailPage() {
   const [checking, setChecking] = useState(false);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const res = await cottagesApi.getById(id);
-        setCottage(res.data);
-      } catch {
-        setError('Cottage not found.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    cottagesApi.getById(id)
+      .then(r => setCottage(r.data))
+      .catch(() => setError('Cottage not found.'))
+      .finally(() => setLoading(false));
   }, [id]);
 
   const checkAvailability = async () => {
@@ -53,10 +38,10 @@ export default function CottageDetailPage() {
       setChecking(true);
       setAvailable(null);
       const res = await cottagesApi.getAvailability(id, {
-        start_date: checkIn,
-        end_date: checkOut,
+        startDate: checkIn,
+        endDate: checkOut,
       });
-      setAvailable(res.data.available);
+      setAvailable(res.data);
     } catch {
       setAvailable(false);
     } finally {
@@ -70,13 +55,11 @@ export default function CottageDetailPage() {
   };
 
   const nights = checkIn && checkOut
-    ? Math.max(0, Math.round(
-      (new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)
-    ))
+    ? Math.max(0, Math.round((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)))
     : 0;
 
   const totalPrice = cottage
-    ? (nights * parseFloat(cottage.price_per_night)).toFixed(2)
+    ? (nights * parseFloat(cottage.pricePerNight)).toFixed(2)
     : 0;
 
   if (loading) {
@@ -88,8 +71,6 @@ export default function CottageDetailPage() {
           <div className="detail-skeleton__body">
             <div className="skeleton" style={{ height: 14, width: '30%' }} />
             <div className="skeleton" style={{ height: 36, width: '60%' }} />
-            <div className="skeleton" style={{ height: 14, width: '45%' }} />
-            <div className="skeleton" style={{ height: 80, width: '100%' }} />
           </div>
         </div>
       </div>
@@ -110,16 +91,15 @@ export default function CottageDetailPage() {
   }
 
   const {
-    name, description, capacity, price_per_night,
+    name, description, capacity, pricePerNight,
     address, latitude, longitude,
-    cottage_images = [],
+    images = [],
     amenities = [],
   } = cottage;
 
   return (
     <div className="detail-page">
       <Navbar />
-
       <main className="detail-main">
         <div className="container">
 
@@ -132,13 +112,12 @@ export default function CottageDetailPage() {
           </nav>
 
           <div className="detail-gallery animate-fade-in-up">
-            <CottageGallery images={cottage_images} />
+            <CottageGallery images={images} />
           </div>
 
           <div className="detail-grid">
 
             <div className="detail-content animate-fade-in-up delay-100">
-
               <div className="detail-header">
                 <div className="detail-header__meta">
                   <span className="detail-header__capacity">◎ Up to {capacity} guests</span>
@@ -147,7 +126,7 @@ export default function CottageDetailPage() {
                 <h1 className="detail-header__title">{name}</h1>
                 <div className="detail-header__price">
                   <span className="detail-header__price-amount">
-                    ${parseFloat(price_per_night).toFixed(0)}
+                    ${parseFloat(pricePerNight).toFixed(0)}
                   </span>
                   <span className="detail-header__price-unit"> / night</span>
                 </div>
@@ -181,16 +160,13 @@ export default function CottageDetailPage() {
                 {address && <p className="detail-section__address">⊹ {address}</p>}
                 <CottageMap lat={latitude} lng={longitude} name={name} address={address} />
               </section>
-
             </div>
 
             <aside className="detail-sidebar animate-fade-in-up delay-200">
               <div className="booking-card">
                 <div className="booking-card__header">
                   <div>
-                    <span className="booking-card__price">
-                      ${parseFloat(price_per_night).toFixed(0)}
-                    </span>
+                    <span className="booking-card__price">${parseFloat(pricePerNight).toFixed(0)}</span>
                     <span className="booking-card__per-night"> / night</span>
                   </div>
                   <span className="booking-card__capacity">◎ Max {capacity} guests</span>
@@ -200,40 +176,23 @@ export default function CottageDetailPage() {
                   <div className="booking-card__dates">
                     <div className="booking-card__date-group">
                       <label className="form-label">Check-in</label>
-                      <input
-                        type="date"
-                        className="form-input"
-                        value={checkIn}
+                      <input type="date" className="form-input" value={checkIn}
                         min={new Date().toISOString().split('T')[0]}
-                        onChange={e => {
-                          setCheckIn(e.target.value);
-                          setAvailable(null);
-                          if (checkOut && e.target.value >= checkOut) setCheckOut('');
-                        }}
+                        onChange={e => { setCheckIn(e.target.value); setAvailable(null); if (checkOut && e.target.value >= checkOut) setCheckOut(''); }}
                       />
                     </div>
                     <div className="booking-card__date-group">
                       <label className="form-label">Check-out</label>
-                      <input
-                        type="date"
-                        className="form-input"
-                        value={checkOut}
+                      <input type="date" className="form-input" value={checkOut}
                         min={checkIn || new Date().toISOString().split('T')[0]}
-                        onChange={e => {
-                          setCheckOut(e.target.value);
-                          setAvailable(null);
-                        }}
+                        onChange={e => { setCheckOut(e.target.value); setAvailable(null); }}
                       />
                     </div>
                   </div>
 
                   <div className="form-group">
                     <label className="form-label">Guests</label>
-                    <select
-                      className="form-input"
-                      value={guests}
-                      onChange={e => setGuests(Number(e.target.value))}
-                    >
+                    <select className="form-input" value={guests} onChange={e => setGuests(Number(e.target.value))}>
                       {Array.from({ length: capacity }, (_, i) => i + 1).map(n => (
                         <option key={n} value={n}>{n} guest{n > 1 ? 's' : ''}</option>
                       ))}
@@ -243,55 +202,33 @@ export default function CottageDetailPage() {
                   {nights > 0 && (
                     <div className="booking-card__breakdown">
                       <div className="booking-card__breakdown-row">
-                        <span>${parseFloat(price_per_night).toFixed(0)} × {nights} night{nights > 1 ? 's' : ''}</span>
+                        <span>${parseFloat(pricePerNight).toFixed(0)} × {nights} night{nights > 1 ? 's' : ''}</span>
                         <span>${totalPrice}</span>
                       </div>
                       <div className="booking-card__breakdown-total">
-                        <span>Total</span>
-                        <span>${totalPrice}</span>
+                        <span>Total</span><span>${totalPrice}</span>
                       </div>
                     </div>
                   )}
 
-                  {available === true && (
-                    <div className="booking-card__avail booking-card__avail--yes">
-                      ✓ Available for selected dates
-                    </div>
-                  )}
-                  {available === false && (
-                    <div className="booking-card__avail booking-card__avail--no">
-                      ✕ Not available for selected dates
-                    </div>
-                  )}
+                  {available === true && <div className="booking-card__avail booking-card__avail--yes">✓ Available for selected dates</div>}
+                  {available === false && <div className="booking-card__avail booking-card__avail--no">✕ Not available for selected dates</div>}
 
                   {available !== true ? (
-                    <button
-                      className="btn btn--primary btn--full"
-                      onClick={checkAvailability}
-                      disabled={!checkIn || !checkOut || checking}
-                    >
-                      {checking
-                        ? <><span className="spinner spinner--sm spinner--light" /> Checking…</>
-                        : 'Check Availability'
-                      }
+                    <button className="btn btn--primary btn--full" onClick={checkAvailability} disabled={!checkIn || !checkOut || checking}>
+                      {checking ? <><span className="spinner spinner--sm spinner--light" /> Checking…</> : 'Check Availability'}
                     </button>
                   ) : (
-                    <button className="btn btn--accent btn--full" onClick={handleBookNow}>
-                      Book Now
-                    </button>
+                    <button className="btn btn--accent btn--full" onClick={handleBookNow}>Book Now</button>
                   )}
 
-                  <p className="booking-card__note">
-                    No account required · Free cancellation policy
-                  </p>
+                  <p className="booking-card__note">No account required · Free cancellation policy</p>
                 </div>
               </div>
             </aside>
-
           </div>
         </div>
       </main>
-
       <Footer />
     </div>
   );

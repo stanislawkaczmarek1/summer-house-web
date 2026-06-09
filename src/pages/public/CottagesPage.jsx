@@ -7,39 +7,38 @@ import { amenitiesApi } from '../../api/amenities';
 import './CottagesPage.css';
 
 const SORT_OPTIONS = [
-  { value: 'price_asc', label: 'Price: Low to High' },
+  { value: 'price_asc',  label: 'Price: Low to High' },
   { value: 'price_desc', label: 'Price: High to Low' },
-  { value: 'capacity', label: 'Most Guests' },
-  { value: 'newest', label: 'Newest First' },
+  { value: 'capacity',   label: 'Most Guests' },
+  { value: 'newest',     label: 'Newest First' },
 ];
 
 const CAPACITY_OPTIONS = [1, 2, 4, 6, 8, 10];
 
 export default function CottagesPage() {
-  const [cottages, setCottages] = useState([]);
-  const [amenities, setAmenities] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const [search, setSearch] = useState('');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [minCapacity, setMinCapacity] = useState('');
+  const [cottages,          setCottages]          = useState([]);
+  const [amenities,         setAmenities]         = useState([]);
+  const [loading,           setLoading]           = useState(true);
+  const [error,             setError]             = useState(null);
+  const [search,            setSearch]            = useState('');
+  const [minPrice,          setMinPrice]          = useState('');
+  const [maxPrice,          setMaxPrice]          = useState('');
+  const [minCapacity,       setMinCapacity]       = useState('');
   const [selectedAmenities, setSelectedAmenities] = useState([]);
-  const [sortBy, setSortBy] = useState('newest');
-  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [sortBy,            setSortBy]            = useState('newest');
+  const [filtersOpen,       setFiltersOpen]       = useState(false);
 
   useEffect(() => {
     const load = async () => {
       try {
         setLoading(true);
-        const [cottagesRes, amenitiesRes] = await Promise.all([
+        const [cRes, aRes] = await Promise.all([
           cottagesApi.getAll(),
           amenitiesApi.getAll(),
         ]);
-        setCottages(cottagesRes.data);
-        setAmenities(amenitiesRes.data);
-      } catch (err) {
+        setCottages(cRes.data);
+        setAmenities(aRes.data);
+      } catch {
         setError('Failed to load cottages. Please try again.');
       } finally {
         setLoading(false);
@@ -55,16 +54,12 @@ export default function CottagesPage() {
   }, []);
 
   const clearFilters = () => {
-    setSearch('');
-    setMinPrice('');
-    setMaxPrice('');
-    setMinCapacity('');
-    setSelectedAmenities([]);
-    setSortBy('newest');
+    setSearch(''); setMinPrice(''); setMaxPrice('');
+    setMinCapacity(''); setSelectedAmenities([]); setSortBy('newest');
   };
 
   const filtered = cottages
-    .filter(c => c.is_visible !== false)
+    .filter(c => c.visible !== false)
     .filter(c => {
       if (!search) return true;
       const q = search.toLowerCase();
@@ -74,8 +69,8 @@ export default function CottagesPage() {
         c.description?.toLowerCase().includes(q)
       );
     })
-    .filter(c => !minPrice || c.price_per_night >= Number(minPrice))
-    .filter(c => !maxPrice || c.price_per_night <= Number(maxPrice))
+    .filter(c => !minPrice || c.pricePerNight >= Number(minPrice))
+    .filter(c => !maxPrice || c.pricePerNight <= Number(maxPrice))
     .filter(c => !minCapacity || c.capacity >= Number(minCapacity))
     .filter(c => {
       if (!selectedAmenities.length) return true;
@@ -84,10 +79,10 @@ export default function CottagesPage() {
     })
     .sort((a, b) => {
       switch (sortBy) {
-        case 'price_asc': return a.price_per_night - b.price_per_night;
-        case 'price_desc': return b.price_per_night - a.price_per_night;
-        case 'capacity': return b.capacity - a.capacity;
-        default: return new Date(b.created_at) - new Date(a.created_at);
+        case 'price_asc':  return a.pricePerNight - b.pricePerNight;
+        case 'price_desc': return b.pricePerNight - a.pricePerNight;
+        case 'capacity':   return b.capacity - a.capacity;
+        default:           return new Date(b.createdAt) - new Date(a.createdAt);
       }
     });
 
@@ -102,9 +97,7 @@ export default function CottagesPage() {
         <div className="container cottages-hero__content">
           <span className="section-label">Our Collection</span>
           <h1 className="cottages-hero__title">Find Your Perfect Cottage</h1>
-          <p className="cottages-hero__subtitle">
-            Browse our handpicked selection of holiday retreats
-          </p>
+          <p className="cottages-hero__subtitle">Browse our handpicked selection of holiday retreats</p>
         </div>
       </section>
 
@@ -124,7 +117,6 @@ export default function CottagesPage() {
                 <button className="cottages-searchbar__clear" onClick={() => setSearch('')}>×</button>
               )}
             </div>
-
             <select
               className="cottages-searchbar__sort"
               value={sortBy}
@@ -134,7 +126,6 @@ export default function CottagesPage() {
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
-
             <button
               className={`cottages-searchbar__filter-btn btn btn--outline btn--sm ${filtersOpen ? 'active' : ''}`}
               onClick={() => setFiltersOpen(o => !o)}
@@ -149,30 +140,14 @@ export default function CottagesPage() {
       <div className={`filters-panel ${filtersOpen ? 'filters-panel--open' : ''}`}>
         <div className="container">
           <div className="filters-panel__grid">
-
             <div className="filters-panel__group">
               <label className="filters-panel__label">Price per night</label>
               <div className="filters-panel__row">
-                <input
-                  type="number"
-                  className="form-input filters-panel__input"
-                  placeholder="Min $"
-                  value={minPrice}
-                  onChange={e => setMinPrice(e.target.value)}
-                  min={0}
-                />
+                <input type="number" className="form-input filters-panel__input" placeholder="Min $" value={minPrice} onChange={e => setMinPrice(e.target.value)} min={0} />
                 <span className="filters-panel__sep">—</span>
-                <input
-                  type="number"
-                  className="form-input filters-panel__input"
-                  placeholder="Max $"
-                  value={maxPrice}
-                  onChange={e => setMaxPrice(e.target.value)}
-                  min={0}
-                />
+                <input type="number" className="form-input filters-panel__input" placeholder="Max $" value={maxPrice} onChange={e => setMaxPrice(e.target.value)} min={0} />
               </div>
             </div>
-
             <div className="filters-panel__group">
               <label className="filters-panel__label">Minimum guests</label>
               <div className="filters-panel__chips">
@@ -187,7 +162,6 @@ export default function CottagesPage() {
                 ))}
               </div>
             </div>
-
             {amenities.length > 0 && (
               <div className="filters-panel__group filters-panel__group--wide">
                 <label className="filters-panel__label">Amenities</label>
@@ -205,7 +179,6 @@ export default function CottagesPage() {
               </div>
             )}
           </div>
-
           {hasActiveFilters && (
             <button className="filters-panel__clear btn btn--ghost btn--sm" onClick={clearFilters}>
               ✕ Clear all filters
@@ -216,13 +189,10 @@ export default function CottagesPage() {
 
       <main className="section section--sm cottages-main">
         <div className="container">
-
           {!loading && !error && (
             <div className="cottages-main__header">
               <p className="cottages-main__count">
-                {filtered.length === 0
-                  ? 'No cottages found'
-                  : `${filtered.length} cottage${filtered.length === 1 ? '' : 's'} found`}
+                {filtered.length === 0 ? 'No cottages found' : `${filtered.length} cottage${filtered.length === 1 ? '' : 's'} found`}
               </p>
             </div>
           )}
@@ -247,9 +217,7 @@ export default function CottagesPage() {
             <div className="cottages-main__state cottages-main__error">
               <span className="cottages-main__error-icon">⚠</span>
               <p>{error}</p>
-              <button className="btn btn--outline btn--sm" onClick={() => window.location.reload()}>
-                Try Again
-              </button>
+              <button className="btn btn--outline btn--sm" onClick={() => window.location.reload()}>Try Again</button>
             </div>
           )}
 
@@ -258,27 +226,19 @@ export default function CottagesPage() {
               <span className="cottages-main__empty-icon">⌂</span>
               <h3>No cottages match your filters</h3>
               <p>Try adjusting your search criteria</p>
-              {hasActiveFilters && (
-                <button className="btn btn--outline btn--sm" onClick={clearFilters}>
-                  Clear Filters
-                </button>
-              )}
+              {hasActiveFilters && <button className="btn btn--outline btn--sm" onClick={clearFilters}>Clear Filters</button>}
             </div>
           )}
 
           {!loading && !error && filtered.length > 0 && (
             <div className="cottages-grid">
               {filtered.map((cottage, i) => (
-                <div
-                  key={cottage.id}
-                  className={`animate-fade-in-up delay-${Math.min((i % 6 + 1) * 100, 600)}`}
-                >
+                <div key={cottage.id} className={`animate-fade-in-up delay-${Math.min((i % 6 + 1) * 100, 600)}`}>
                   <CottageCard cottage={cottage} />
                 </div>
               ))}
             </div>
           )}
-
         </div>
       </main>
 

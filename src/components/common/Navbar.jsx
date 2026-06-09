@@ -34,7 +34,7 @@ export default function Navbar() {
 
         <nav className="navbar__links">
           <Link to="/cottages" className="navbar__link">Cottages</Link>
-          <Link to="/cottages" className="navbar__link">Map</Link>
+          <Link to="/map" className="navbar__link">Map</Link>
           <Link to="/cottages" className="btn btn--outline btn--sm navbar__cta">
             Book Now
           </Link>
@@ -51,7 +51,7 @@ export default function Navbar() {
 
       <div className={`navbar__mobile ${menuOpen ? 'navbar__mobile--open' : ''}`}>
         <Link to="/cottages" className="navbar__mobile-link">Cottages</Link>
-        <Link to="/cottages" className="navbar__mobile-link">Map</Link>
+        <Link to="/map" className="navbar__mobile-link">Map</Link>
         <Link to="/cottages" className="navbar__mobile-link navbar__mobile-cta">Book Now</Link>
       </div>
     </header>

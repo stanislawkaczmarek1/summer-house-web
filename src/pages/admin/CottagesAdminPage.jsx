@@ -14,8 +14,7 @@ export default function CottagesAdminPage() {
 
   const load = async () => {
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true); setError(null);
       const res = await cottagesApi.getAll();
       setCottages(res.data);
     } catch {
@@ -30,9 +29,9 @@ export default function CottagesAdminPage() {
   const handleToggleVisibility = async (cottage) => {
     try {
       setToggling(cottage.id);
-      await cottagesApi.patch(cottage.id, { is_visible: !cottage.is_visible });
+      await cottagesApi.patch(cottage.id, { visible: !cottage.visible });
       setCottages(prev =>
-        prev.map(c => c.id === cottage.id ? { ...c, is_visible: !c.is_visible } : c)
+        prev.map(c => c.id === cottage.id ? { ...c, visible: !c.visible } : c)
       );
     } catch {
       alert('Failed to update visibility.');
@@ -62,12 +61,10 @@ export default function CottagesAdminPage() {
           <div className="admin-page-header__left">
             <h1 className="admin-page-title">Cottages</h1>
             <p className="admin-page-subtitle">
-              {cottages.length} total · {cottages.filter(c => c.is_visible).length} visible
+              {cottages.length} total · {cottages.filter(c => c.visible).length} visible
             </p>
           </div>
-          <Link to="/admin/cottages/new" className="btn btn--primary">
-            + Add Cottage
-          </Link>
+          <Link to="/admin/cottages/new" className="btn btn--primary">+ Add Cottage</Link>
         </div>
 
         {error && (
@@ -79,16 +76,12 @@ export default function CottagesAdminPage() {
 
         <div className="admin-table-wrap">
           {loading ? (
-            <div className="admin-table-loading">
-              <span className="spinner spinner--lg" />
-            </div>
+            <div className="admin-table-loading"><span className="spinner spinner--lg" /></div>
           ) : cottages.length === 0 ? (
             <div className="admin-table-empty">
               <span>⌂</span>
               <p>No cottages yet</p>
-              <Link to="/admin/cottages/new" className="btn btn--primary btn--sm">
-                Add your first cottage
-              </Link>
+              <Link to="/admin/cottages/new" className="btn btn--primary btn--sm">Add your first cottage</Link>
             </div>
           ) : (
             <table className="admin-table">
@@ -105,12 +98,11 @@ export default function CottagesAdminPage() {
               <tbody>
                 {cottages.map(cottage => (
                   <tr key={cottage.id}>
-
                     <td>
                       <div className="cottages-admin-table__name-cell">
                         <div className="cottages-admin-table__thumb">
-                          {cottage.cottage_images?.[0]?.image_url
-                            ? <img src={cottage.cottage_images[0].image_url} alt={cottage.name} />
+                          {cottage.images?.[0]?.imageUrl
+                            ? <img src={cottage.images[0].imageUrl} alt={cottage.name} />
                             : <span>⌂</span>
                           }
                         </div>
@@ -120,53 +112,25 @@ export default function CottagesAdminPage() {
                         </div>
                       </div>
                     </td>
-
-                    <td>
-                      <span className="cottages-admin-table__capacity">
-                        ◎ {cottage.capacity}
-                      </span>
-                    </td>
-
-                    <td>
-                      <span className="cottages-admin-table__price">
-                        ${parseFloat(cottage.price_per_night).toFixed(0)}
-                      </span>
-                    </td>
-
-                    <td>
-                      <span className="cottages-admin-table__address">
-                        {cottage.address || '—'}
-                      </span>
-                    </td>
-
+                    <td><span className="cottages-admin-table__capacity">◎ {cottage.capacity}</span></td>
+                    <td><span className="cottages-admin-table__price">${parseFloat(cottage.pricePerNight).toFixed(0)}</span></td>
+                    <td><span className="cottages-admin-table__address">{cottage.address || '—'}</span></td>
                     <td>
                       <button
-                        className={`visibility-toggle ${cottage.is_visible ? 'visibility-toggle--on' : 'visibility-toggle--off'}`}
+                        className={`visibility-toggle ${cottage.visible ? 'visibility-toggle--on' : 'visibility-toggle--off'}`}
                         onClick={() => handleToggleVisibility(cottage)}
                         disabled={toggling === cottage.id}
-                        title={cottage.is_visible ? 'Click to hide' : 'Click to show'}
                       >
                         {toggling === cottage.id
                           ? <span className="spinner spinner--sm" />
-                          : cottage.is_visible ? '◉ Visible' : '◯ Hidden'
+                          : cottage.visible ? '◉ Visible' : '◯ Hidden'
                         }
                       </button>
                     </td>
-
                     <td>
                       <div className="admin-table__actions">
-                        <Link
-                          to={`/admin/cottages/${cottage.id}/edit`}
-                          className="btn btn--outline btn--sm"
-                        >
-                          Edit
-                        </Link>
-                        <button
-                          className="btn btn--sm admin-btn--danger"
-                          onClick={() => setConfirmDelete(cottage)}
-                        >
-                          Delete
-                        </button>
+                        <Link to={`/admin/cottages/${cottage.id}/edit`} className="btn btn--outline btn--sm">Edit</Link>
+                        <button className="btn btn--sm admin-btn--danger" onClick={() => setConfirmDelete(cottage)}>Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -183,27 +147,12 @@ export default function CottagesAdminPage() {
           <div className="admin-modal animate-scale-in">
             <h2 className="admin-modal__title">Delete Cottage</h2>
             <p className="admin-modal__body">
-              Are you sure you want to delete{' '}
-              <strong>{confirmDelete.name}</strong>?
-              This action cannot be undone.
+              Are you sure you want to delete <strong>{confirmDelete.name}</strong>? This action cannot be undone.
             </p>
             <div className="admin-modal__actions">
-              <button
-                className="btn btn--ghost"
-                onClick={() => setConfirmDelete(null)}
-                disabled={deleting === confirmDelete.id}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn admin-btn--danger"
-                onClick={() => handleDelete(confirmDelete.id)}
-                disabled={deleting === confirmDelete.id}
-              >
-                {deleting === confirmDelete.id
-                  ? <><span className="spinner spinner--sm" /> Deleting…</>
-                  : 'Delete'
-                }
+              <button className="btn btn--ghost" onClick={() => setConfirmDelete(null)} disabled={deleting === confirmDelete.id}>Cancel</button>
+              <button className="btn admin-btn--danger" onClick={() => handleDelete(confirmDelete.id)} disabled={deleting === confirmDelete.id}>
+                {deleting === confirmDelete.id ? <><span className="spinner spinner--sm" /> Deleting…</> : 'Delete'}
               </button>
             </div>
           </div>

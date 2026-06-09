@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import ScrollToTop from '../components/common/ScrollToTop';
 
 // Public pages
+import MapPage from '../pages/public/MapPage';
 import HomePage from '../pages/public/HomePage';
 import CottagesPage from '../pages/public/CottagesPage';
 import CottageDetailPage from '../pages/public/CottageDetailPage';
@@ -27,9 +29,11 @@ function ProtectedRoute({ children }) {
 export default function AppRouter() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* public */}
         <Route path="/" element={<HomePage />} />
+        <Route path="/map" element={<MapPage />} />
         <Route path="/cottages" element={<CottagesPage />} />
         <Route path="/cottages/:id" element={<CottageDetailPage />} />
         <Route path="/cottages/:id/reserve" element={<ReservationPage />} />

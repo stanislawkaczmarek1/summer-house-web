@@ -81,7 +81,7 @@ export default function HomePage() {
               <Link to="/cottages" className="btn btn--accent btn--lg">
                 Browse Cottages
               </Link>
-              <Link to="/cottages" className="btn btn--light btn--lg">
+              <Link to="/map" className="btn btn--light btn--lg">
                 View on Map
               </Link>
             </div>
@@ -227,7 +227,7 @@ export default function HomePage() {
             Browse all available cottages on an interactive map.<br />
             Filter by location, capacity, or price range.
           </p>
-          <Link to="/cottages" className="btn btn--accent btn--lg">
+          <Link to="/map" className="btn btn--accent btn--lg">
             Open Map View
           </Link>
         </div>
